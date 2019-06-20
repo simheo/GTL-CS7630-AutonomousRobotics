@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<launch>
+	<!-- <include file="$(find kobuki_auto_docking)/launch/minimal.launch"/> -->
+    <include file="$(find vrep_ros_teleop)/launch/teleop_mux_turtlebot.launch"/> 
+    <node name="task_server" pkg="floor_nav" type="task_server" output="screen" >
+        <!-- After install -->
+        <!-- <param name="lib_path" value="$(find floor_nav)/tasks"/> -->
+        <!-- While developing -->
+        <param name="lib_path" value="$(find floor_nav)/../../devel/share/floor_nav/tasks"/>
+        <param name="base_frame" value="/base_frame"/>
+        <param name="reference_frame" value="odom"/>
+        <!-- <param name="reference_frame" value="map"/>-->
+    </node>
+
+</launch>
+

@@ -1,0 +1,16 @@
+<launch>
+  <node pkg="face_detect" type="rosfacedetect.py" name="face_detect" output="screen">
+	  <param name ="/use_sim_time" value="false"/>
+      <remap from="/face_detect/image" to="/vrep/visionSensor"/>
+  </node>
+  <node pkg="learning_joy" type="vrep_joy.py" name="controller">
+  </node>
+  <node respawn="true" pkg="joy"
+		type="joy_node" name="joystick_node" >
+		<param name="dev" type="string" value="/dev/input/js0" />
+		<param name="deadzone" value="0.12" />
+		<param name="autorepeat_rate" value="10" /> 
+		<remap from="/vrep/twistCommand" to="/telop/cmd_vel"/> 	
+  </node>
+</launch>
+

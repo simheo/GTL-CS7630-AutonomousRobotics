@@ -1,0 +1,38 @@
+<launch>
+
+ <!-- joy node -->
+
+  <node name="task_server" pkg="floor_nav" type="task_server" output="screen" >
+        <param name="lib_path" value="$(find floor_nav)/../../devel/share/floor_nav/tasks"/>
+        <param name="base_frame" value="/base_link"/>
+        <param name="reference_frame" value="odom"/>
+    </node>
+
+
+ 
+  <arg name="3d_sensor" default="$(env TURTLEBOT_3D_SENSOR)"/>  <!-- r200, kinect, asus_xtion_pro -->
+  <include file="$(find turtlebot_bringup)/launch/3dsensor.launch">
+    <arg name="rgb_processing" value="false" />
+    <arg name="depth_registration" value="false" />
+    <arg name="depth_processing" value="false" />
+
+    <arg name="scan_topic" value="/scan" />
+  </include>
+
+  <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping">
+    <remap from="scan" to="/scan"/>
+	<param name="odom_frame" value="/odom"/>
+	<param name="base_frame" value="/base_link"/>
+	
+	<param name="linearUpdate" value="0.5"/>
+	<param name="angularUpdate" value="0.436"/>
+	<param name="temporalUpdate" value="-1.0"/>
+	<param name="resampleThreshold" value="0.5"/>
+	<param name="delta" value="0.02"/>
+	
+	<!-- does not work with this remap -->
+	<remap from="scan" to="/scan"/>
+  </node>
+  
+  <!-- include file="$(find vrep_ros_teleop)/launch/includes/gmapping/gmapping.launch.xml"/-->
+</launch>

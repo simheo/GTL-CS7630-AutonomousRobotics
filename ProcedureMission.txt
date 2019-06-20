@@ -1,0 +1,13 @@
+What to do to launch the whole mission on the Turtlebot:
+- roscore
+- roslaunch turtlebot_bringup minimal.launch
+- roslaunch turtlebot_bringup 3dsensor.launch
+- roslaunch learning_joy gmapping_ttl.launch
+- roslaunch floor_nav launch_turtle.launch
+- python acpi_monitor.py in acpi_monitor pck
+- roslaunch exploration2_turtle.launch in occgrid_planner_base ON THE MACHINE, NOT SSH
+- python final_mission.python
+
+Command to publish in the topic /acpi_monitor/battery:
+	rostopic pub /acpi_monitor/battery std_msgs/Float32 value --once
+

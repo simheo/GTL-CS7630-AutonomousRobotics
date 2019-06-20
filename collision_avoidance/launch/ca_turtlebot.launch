@@ -1,0 +1,13 @@
+<launch>
+  <!-- use the joystick -->
+  <include file="$(find turtlebot_teleop)/launch/logitech.launch"/> 
+  
+  <node pkg="collision_avoidance" type="collision_avoidance" name="coll_avoid" output="screen">
+      launch-prefix="xterm -e gdb --args"
+      <param name="radius" value="1.0" />
+      <remap from="~scans" to="/camera/depth/points"/>
+      <remap from="~cmd_vel" to="teleop_velocity_smoother/raw_cmd_vel"/>
+      <remap from="~output_vel" to="turtlebot_teleop_joystick/cmd_vel"/>
+  </node>
+
+</launch>

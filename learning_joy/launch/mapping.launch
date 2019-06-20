@@ -1,0 +1,37 @@
+<launch>
+
+ <!-- joy node -->
+  <include file="$(find pointcloud_to_laserscan)/launch/sample_node.launch"/>
+  <node pkg="learning_joy" type="vrep_joy.py" name="controller">
+  </node>
+  <node respawn="true" pkg="joy"
+		type="joy_node" name="joystick_node" >
+		<param name="dev" type="string" value="/dev/input/js0" />
+		<param name="deadzone" value="0.12" />
+		<param name="autorepeat_rate" value="10" />
+		<remap from="/vrep/twistCommand" to="/joy"/> 	
+  </node>
+  
+  <node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="gmap" >
+  <remap from="cloud_in" to="/vrep/hokuyoSensor"/>
+  <remap from="scan" to="/scan"/>
+  </node>
+
+  <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping">
+  
+	<param name="odom_frame" value="/world"/>
+	<!-- param name="base_frame" value="/rosControlledBubbleRob"/ -->
+	<param name="base_frame" value="/body"/>
+  
+	<param name="linearUpdate" value="0.5"/>
+	<param name="angularUpdate" value="0.436"/>
+	<param name="temporalUpdate" value="-1.0"/>
+	<param name="resampleThreshold" value="0.5"/>
+	<param name="delta" value="0.02"/>
+	
+	<!-- does not work with this remap -->
+	<!-- remap from="scan" to="/scan"/ -->
+  </node>
+  
+  <!-- include file="$(find vrep_ros_teleop)/launch/includes/gmapping/gmapping.launch.xml"/-->
+</launch>
